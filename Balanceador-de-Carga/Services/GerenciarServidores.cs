@@ -1,12 +1,13 @@
 ﻿using Balanceador_de_Carga.Models;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Balanceador_de_Carga.Services
 {
     class GerenciarServidores
     {
-        private string CaminhoArquivo;
+        //private string CaminhoArquivo;
         private List<int> ConteudoArquivo;
         private Arquivo Arquivo = new Arquivo();
 
@@ -20,10 +21,10 @@ namespace Balanceador_de_Carga.Services
         List<User> listUsers = new List<User>();
         List<string> linhasParaSaida = new List<string>();
 
-        public GerenciarServidores(string caminhoArquivo)
-        {
-            CaminhoArquivo = caminhoArquivo;
-        }
+        //public GerenciarServidores(string caminhoArquivo = null)
+        //{
+        //    CaminhoArquivo = caminhoArquivo;
+        //}
 
         public void ControlarServers()
         {
@@ -35,7 +36,7 @@ namespace Balanceador_de_Carga.Services
             {
                 CustoTotalServidores += listServidores.Count;
 
-                listServidores = balancearServidores.DeletarServidoresInativos(listServidores);
+                listServidores = balancearServidores.DeletarServidoresInativos(listServidores, TTask);
 
                 int indice = i + 2;
                 DefinirQtdUsuariosAlocar(indice);
@@ -57,10 +58,10 @@ namespace Balanceador_de_Carga.Services
                 linhasParaSaida.Add(saida);
             }
 
-            Console.WriteLine($"Custo Total = {CustoTotalServidores.ToString("C2")}");
-            linhasParaSaida.Add($"Custo Total = {CustoTotalServidores.ToString("C2")}");
+            Console.WriteLine($"{CustoTotalServidores.ToString("D2")}");
+            linhasParaSaida.Add($"{CustoTotalServidores.ToString("D2")}");
 
-            Arquivo.EscreverArquivo(@"C:\Projects\Teste\Gravar\output.txt", linhasParaSaida);
+            Arquivo.EscreverArquivo("", linhasParaSaida);
         }
 
         private void DefinirQtdUsuariosAlocar(int indice)
@@ -74,15 +75,30 @@ namespace Balanceador_de_Carga.Services
                 for (int i = 0; i < conteudo; i++)
                     this.listUsers.Add(new User(TTask, indice));
             }
-
         }
 
         private void LerAquivo()
         {
-            this.ConteudoArquivo = Arquivo.LerArquivo(this.CaminhoArquivo);
+            this.ConteudoArquivo = Arquivo.LerArquivo();
             this.TTask = ConteudoArquivo[0];
             this.UMax = ConteudoArquivo[1];
             this.ticks = (ConteudoArquivo.Count - 2) + TTask;
+        }
+
+        public void EncerrarAplicativo()
+        {
+            Console.WriteLine("\n------------------------------------------------------------------------");
+            Console.WriteLine("Programa finalizado com suceso. Pressione qualquer tecla para finalizar!");
+            Console.ReadLine();
+
+
+            for (int i = 3; i > 0; i--)
+            {
+                Console.Write($"Fechando em {i}...\n");
+                Thread.Sleep(1000);
+            }
+
+            Environment.Exit(0);
         }
     }
 }

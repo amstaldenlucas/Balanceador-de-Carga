@@ -5,7 +5,6 @@ namespace Balanceador_de_Carga.Services
 {
     class BalancearServidores
     {
-        const int TTASK = 4;
         public List<Server> DistribuirUsuariosNosServidores(List<Server> servidoresOnline, List<User> usuariosParaAlocar, int umax, int idUser)
         {
             int qtdUsuariosParaAlocar = usuariosParaAlocar.Count;
@@ -14,14 +13,6 @@ namespace Balanceador_de_Carga.Services
             {
                 foreach (Server item in servidoresOnline)
                 {
-                    //if (item.GetQtdUsuariosAlocados() < umax)
-                    //{
-                    //    User novoUsuario = new User(0, idUser);
-                    //    item.adicionarUsuario(novoUsuario);
-
-                    //    usuariosParaAlocar.Remove(novoUsuario);
-                    //    qtdUsuariosParaAlocar--;
-                    //}
 
                     while(item.GetQtdUsuariosAlocados() < umax && qtdUsuariosParaAlocar > 0)
                     {
@@ -31,15 +22,6 @@ namespace Balanceador_de_Carga.Services
                         usuariosParaAlocar.Remove(novoUsuario);
                         qtdUsuariosParaAlocar--;
                     }
-                    
-                    //if (item.GetQtdUsuariosAlocados() < umax && qtdUsuariosParaAlocar > 0)
-                    //{
-                    //    User novoUsuario = new User(0, idUser);
-                    //    item.adicionarUsuario(novoUsuario);
-
-                    //    usuariosParaAlocar.Remove(novoUsuario);
-                    //    qtdUsuariosParaAlocar--;
-                    //}
                 }
 
                 if (qtdUsuariosParaAlocar > 0)
@@ -57,12 +39,12 @@ namespace Balanceador_de_Carga.Services
             return servidoresOnline;
         }
 
-        public List<Server> DeletarServidoresInativos(List<Server> servidoresOnline)
+        public List<Server> DeletarServidoresInativos(List<Server> servidoresOnline, int TTask = 0)
         {
             List<Server> servidoresParaDeletar = new List<Server>();
             foreach (Server item in servidoresOnline)
             {
-                DeletarUsuariosInativos(item, TTASK);
+                DeletarUsuariosInativos(item, TTask);
 
                 if (item.GetQtdUsuariosAlocados() == 0)
                     servidoresParaDeletar.Add(item);

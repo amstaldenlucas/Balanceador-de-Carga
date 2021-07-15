@@ -7,8 +7,22 @@ namespace Balanceador_de_Carga.Services
 {
     class Arquivo
     {
-        public List<int> LerArquivo(string caminhoArquivo)
+        public string DiretorioLeitura;
+        public string DiretorioGravar;
+        private string DiretorioRaiz { get; set; }
+
+        public Arquivo(string diretorioRaiz = null)
         {
+            DiretorioRaiz = string.IsNullOrEmpty(diretorioRaiz) ? AppDomain.CurrentDomain.BaseDirectory.ToString() + @"Arquivos" : diretorioRaiz;
+
+            DiretorioLeitura = DiretorioRaiz + @"\Ler\input.txt";
+            DiretorioGravar = DiretorioRaiz + @"\Gravar\output.txt";
+        }
+        public List<int> LerArquivo(string caminhoArquivo = null)
+        {
+            caminhoArquivo = string.IsNullOrEmpty(caminhoArquivo) ? DiretorioLeitura : caminhoArquivo;
+            VerificarDiretorioRaiz();
+
             List<int> linhas = new List<int>();
 
             if (!File.Exists(caminhoArquivo))
@@ -19,7 +33,7 @@ namespace Balanceador_de_Carga.Services
 
             try
             {
-                Console.WriteLine("\n Iniciando leitura do arquivo...");
+                Console.WriteLine("\nIniciando leitura do arquivo...");
                 string[] conteudoArquivo = File.ReadAllLines(caminhoArquivo);
 
                 for (int i = 0; i < conteudoArquivo.Length; i++)
@@ -53,22 +67,23 @@ namespace Balanceador_de_Carga.Services
             return string.IsNullOrEmpty(erro);
         }
 
-        public void EscreverArquivo(string caminhoSolvarArquivo, List<string> valoresParaEscrita = null)
+        public void EscreverArquivo(string caminhoSalvarArquivo = null, List<string> valoresParaEscrita = null)
         {
+            caminhoSalvarArquivo = string.IsNullOrEmpty(caminhoSalvarArquivo) ? DiretorioGravar : caminhoSalvarArquivo;
             if (valoresParaEscrita == null || valoresParaEscrita.Count == 0)
             {
                 Console.WriteLine("Não há conteúdo para gravar, arquivo vazio ou inexistente");
                 return;
             }
 
-            using (StreamWriter sw = new StreamWriter(DefinirNomeArquivo(caminhoSolvarArquivo)))
+            using (StreamWriter sw = new StreamWriter(DefinirNomeArquivo(caminhoSalvarArquivo)))
             {
                 try
                 {
                     foreach (string item in valoresParaEscrita)
                         sw.WriteLine(item.Trim());
 
-                    Console.WriteLine("Arquivo gravado com suceso!");
+                    Console.WriteLine("\nArquivo gravado com suceso!");
                 }
                 catch (IOException ex)
                 {
@@ -89,6 +104,42 @@ namespace Balanceador_de_Carga.Services
             }
 
             return novoNome;
+        }
+
+        public void VerificarDiretorioRaiz()
+        {
+            string dirRaizLeitura = this.DiretorioRaiz;
+            string dirRaizEscrita = dirRaizLeitura + @"\Gravar";
+
+            dirRaizLeitura += @"\Ler";
+
+
+            if (!Directory.Exists(dirRaizLeitura))
+                Directory.CreateDirectory(dirRaizLeitura);
+
+            if (!Directory.Exists(dirRaizEscrita))
+                Directory.CreateDirectory(dirRaizEscrita);
+
+            dirRaizLeitura += @"\input.txt";
+            if (!File.Exists(dirRaizLeitura))
+                EscreverArquivo(dirRaizLeitura, GetArquivoPadrao());
+        }
+
+        private List<string> GetArquivoPadrao()
+        {
+            List<string> arquivoPadrao = new List<string>
+            {
+                "4",
+                "2",
+                "1",
+                "3",
+                "0",
+                "1",
+                "0",
+                "1"
+            };
+
+            return arquivoPadrao;
         }
     }
 }
