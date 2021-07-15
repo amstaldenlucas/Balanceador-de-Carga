@@ -1,7 +1,5 @@
 ﻿using Balanceador_de_Carga.Models;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Balanceador_de_Carga.Services
 {
@@ -16,25 +14,42 @@ namespace Balanceador_de_Carga.Services
             {
                 foreach (Server item in servidoresOnline)
                 {
-                    if (item.GetQtdUsuariosAlocados() < umax)
+                    //if (item.GetQtdUsuariosAlocados() < umax)
+                    //{
+                    //    User novoUsuario = new User(0, idUser);
+                    //    item.adicionarUsuario(novoUsuario);
+
+                    //    usuariosParaAlocar.Remove(novoUsuario);
+                    //    qtdUsuariosParaAlocar--;
+                    //}
+
+                    while(item.GetQtdUsuariosAlocados() < umax && qtdUsuariosParaAlocar > 0)
                     {
                         User novoUsuario = new User(0, idUser);
-                        novoUsuario = usuariosParaAlocar[0];
                         item.adicionarUsuario(novoUsuario);
 
                         usuariosParaAlocar.Remove(novoUsuario);
                         qtdUsuariosParaAlocar--;
                     }
+                    
+                    //if (item.GetQtdUsuariosAlocados() < umax && qtdUsuariosParaAlocar > 0)
+                    //{
+                    //    User novoUsuario = new User(0, idUser);
+                    //    item.adicionarUsuario(novoUsuario);
+
+                    //    usuariosParaAlocar.Remove(novoUsuario);
+                    //    qtdUsuariosParaAlocar--;
+                    //}
                 }
 
                 if (qtdUsuariosParaAlocar > 0)
                 {
-                    List<User> listUsers = new List<User>();
-                    listUsers.Add(new User(0, idUser));
+                    List<User> listUsers = new List<User>
+                    {
+                        new User(0, idUser)
+                    };
 
-                    //User novoUsuario = new User(TTASK);
                     servidoresOnline.Add(new Server(servidoresOnline.Count + 1, listUsers, 1));
-
                     qtdUsuariosParaAlocar--;
                 }
             }
@@ -57,7 +72,7 @@ namespace Balanceador_de_Carga.Services
             {
                 servidoresOnline.Remove(servidoresParaDeletar[i]);
             }
-                return servidoresOnline;
+            return servidoresOnline;
         }
 
         private void DeletarUsuariosInativos(Server servidor, int QtdTasksExecutadas)
@@ -74,10 +89,7 @@ namespace Balanceador_de_Carga.Services
 
             for (int i = 0; i < ususariosParaDeleter.Count; i++)
             {
-                //if (servidor.UsuariosAlocados[i].QtdTask == QtdTasksExecutadas)
-                //    servidor.RemoverUsuario(servidor.UsuariosAlocados[i]);
-
-                servidor.RemoverUsuarios(ususariosParaDeleter[i]);
+                servidor.RemoverUsuario(ususariosParaDeleter[i]);
             }
         }
     }

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Balanceador_de_Carga.Models
 {
@@ -38,11 +36,6 @@ namespace Balanceador_de_Carga.Models
         public void RemoverUsuario(User usuario)
         {
             this.usuariosAlocados.Remove(usuario);
-        }
-
-        public void RemoverUsuarios(User usersParaRemover)
-        {
-            this.usuariosAlocados.RemoveAll(usuariosAlocados => usuariosAlocados.IdUsuario == usersParaRemover.IdUsuario);
         }
     }
 }

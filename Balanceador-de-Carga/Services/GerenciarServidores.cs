@@ -1,7 +1,6 @@
 ﻿using Balanceador_de_Carga.Models;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Balanceador_de_Carga.Services
 {
@@ -15,6 +14,7 @@ namespace Balanceador_de_Carga.Services
         private int ticks = 0;
         private int TTask = 0;
         private int UMax = 0;
+        private int CustoTotalServidores = 0;
 
         List<Server> listServidores = new List<Server>();
         List<User> listUsers = new List<User>();
@@ -29,48 +29,52 @@ namespace Balanceador_de_Carga.Services
         {
             BalancearServidores balancearServidores = new BalancearServidores();
             LerAquivo();
-            
+
 
             for (int i = 0; i < ticks; i++)
             {
-                //int tickAtual = i++;
-                if (i == 4)
-                {
-                    int teste = i;
-                }
+                CustoTotalServidores += listServidores.Count;
 
                 listServidores = balancearServidores.DeletarServidoresInativos(listServidores);
 
-                DefinirQtdUsuariosAlocar(ConteudoArquivo[i + 2], i);
-                listServidores = balancearServidores.DistribuirUsuariosNosServidores(listServidores, listUsers, UMax, ticks);
+                int indice = i + 2;
+                DefinirQtdUsuariosAlocar(indice);
+
+                listServidores = balancearServidores.DistribuirUsuariosNosServidores(listServidores, listUsers, UMax, i);
 
                 string saida = string.Empty;
+
                 foreach (Server servidor in listServidores)
-                {
                     saida += string.Concat(servidor.GetQtdUsuariosAlocados(), ",");
-                }
 
-                saida = saida.Substring(0, saida.Length - 1);
+                if (saida.Length > 0)
+                    saida = saida.Substring(0, saida.Length - 1);
+                else
+                    saida = "0";
 
-                //if (i + 1 < ticks)
-                //    saida += "\n";
 
                 Console.WriteLine(saida);
                 linhasParaSaida.Add(saida);
             }
 
-            linhasParaSaida.Add("0");
-            linhasParaSaida.Add("Custo Total");
+            Console.WriteLine($"Custo Total = {CustoTotalServidores.ToString("C2")}");
+            linhasParaSaida.Add($"Custo Total = {CustoTotalServidores.ToString("C2")}");
 
             Arquivo.EscreverArquivo(@"C:\Projects\Teste\Gravar\output.txt", linhasParaSaida);
         }
 
-        private void DefinirQtdUsuariosAlocar(int qtdUsuarios, int id)
+        private void DefinirQtdUsuariosAlocar(int indice)
         {
             this.listUsers.Clear();
 
-            for (int i = 0; i < qtdUsuarios; i++)
-                this.listUsers.Add(new User(TTask, id));
+            if (ConteudoArquivo.Count > indice)
+            {
+                int conteudo = ConteudoArquivo[indice];
+
+                for (int i = 0; i < conteudo; i++)
+                    this.listUsers.Add(new User(TTask, indice));
+            }
+
         }
 
         private void LerAquivo()
@@ -80,7 +84,5 @@ namespace Balanceador_de_Carga.Services
             this.UMax = ConteudoArquivo[1];
             this.ticks = (ConteudoArquivo.Count - 2) + TTask;
         }
-
-
     }
 }
