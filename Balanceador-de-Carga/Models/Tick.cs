@@ -6,6 +6,12 @@ namespace Balanceador_de_Carga.Models
 {
     class Tick
     {
+        /// <summary>
+        /// Construtor base para o obj Tick
+        /// </summary>
+        /// <param name="idTick"></param>
+        /// <param name="usuarios"></param>
+        /// <param name="fimTarefa"></param>
         public Tick(int idTick, int usuarios, int fimTarefa)
         {
             IdTick = idTick;

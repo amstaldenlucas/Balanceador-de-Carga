@@ -12,10 +12,10 @@ namespace Balanceador_de_Carga.Services
 
         private BalancearServidores BalancearServidores = new BalancearServidores();
         private int ticks = 0;
-        private int TTask = 0;
-        private int UMax = 0;
-        private int CustoTotalServidores = 0;
-        public int QuantidadeUsuariosAlocar = 0;
+        private int tTask = 0;
+        private int uMax = 0;
+        private int custoTotalServidores = 0;
+        public int quantidadeUsuariosAlocar = 0;
 
         List<Server> listServidores = new List<Server>();
         List<User> listUsers = new List<User>();
@@ -26,20 +26,23 @@ namespace Balanceador_de_Carga.Services
             BalancearServidores balancearServidores = new BalancearServidores();
             LerAquivo(caminhoArquivo);
 
-
+            // Laço para ser executado até existir algum tick para ser executado.
             for (int i = 0; i < ticks; i++)
             {
-                CustoTotalServidores += listServidores.Count;
+                custoTotalServidores += listServidores.Count;
 
-                listServidores = balancearServidores.DeletarServidoresInativos(listServidores, TTask);
+                // Deletar os servidores inativos
+                listServidores = balancearServidores.DeletarServidoresInativos(listServidores, tTask);
 
                 int indice = i + 2;
                 DefinirQtdUsuariosAlocar(indice);
 
-                listServidores = balancearServidores.DistribuirUsuariosNosServidores(listServidores, listUsers, UMax, i);
+                // Distribuir e/ou remover os novos usuários dos servidores
+                listServidores = balancearServidores.DistribuirUsuariosNosServidores(listServidores, listUsers, uMax, i);
 
                 string saida = string.Empty;
 
+                // Gravar a quantidade de servidores online com a quantidade de seus respectivos usuários.
                 foreach (Server servidor in listServidores)
                     saida += string.Concat(servidor.GetQtdUsuariosAlocados(), ",");
 
@@ -48,17 +51,20 @@ namespace Balanceador_de_Carga.Services
                 else
                     saida = "0";
 
-
                 Console.WriteLine(saida);
                 linhasParaSaida.Add(saida);
             }
 
-            Console.WriteLine($"{CustoTotalServidores.ToString("D2")}");
-            linhasParaSaida.Add($"{CustoTotalServidores.ToString("D2")}");
+            Console.WriteLine($"{custoTotalServidores.ToString("D2")}");
+            linhasParaSaida.Add($"{custoTotalServidores.ToString("D2")}");
 
             Arquivo.EscreverArquivo("", linhasParaSaida);
         }
 
+        /// <summary>
+        /// Definir quantidade de novos usuários para alocar.
+        /// </summary>
+        /// <param name="indice">Indice da linha atual</param>
         public void DefinirQtdUsuariosAlocar(int indice)
         {
             this.listUsers.Clear();
@@ -68,12 +74,16 @@ namespace Balanceador_de_Carga.Services
                 int conteudo = ConteudoArquivo[indice];
 
                 for (int i = 0; i < conteudo; i++)
-                    this.listUsers.Add(new User(TTask, indice));
+                    this.listUsers.Add(new User(tTask, indice));
             }
 
-            QuantidadeUsuariosAlocar = this.listUsers.Count;
+            quantidadeUsuariosAlocar = this.listUsers.Count;
         }
 
+        /// <summary>
+        /// Ler o arquivo atual
+        /// </summary>
+        /// <param name="caminhoArquivo">Caminho absoluto do arquivo</param>
         public void LerAquivo(string caminhoArquivo = null)
         {
             List<int> conteudoLido = Arquivo.LerArquivo(caminhoArquivo);
@@ -85,9 +95,9 @@ namespace Balanceador_de_Carga.Services
             if (this.ConteudoArquivo.Count == 0)
                 EncerrarAplicativo();
 
-            this.TTask = ConteudoArquivo[0];
-            this.UMax = ConteudoArquivo[1];
-            this.ticks = (ConteudoArquivo.Count - 2) + TTask;
+            this.tTask = ConteudoArquivo[0];
+            this.uMax = ConteudoArquivo[1];
+            this.ticks = (ConteudoArquivo.Count - 2) + tTask;
         }
 
         public void EncerrarAplicativo()

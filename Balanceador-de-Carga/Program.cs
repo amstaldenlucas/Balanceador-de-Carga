@@ -1,6 +1,5 @@
 ﻿using Balanceador_de_Carga.Services;
 using System;
-using System.Collections.Generic;
 
 namespace Balanceador_de_Carga
 {
@@ -8,6 +7,8 @@ namespace Balanceador_de_Carga
     {
         static void Main(string[] args)
         {
+            // Classe principal responsável por inicializar o aplicativo.
+
             Console.WriteLine("*******************************************");
             Console.WriteLine("* Sistema balanceador de carga em Cloud   *");
             Console.WriteLine("* Desenvolvido por Lucas Amstalden        *");

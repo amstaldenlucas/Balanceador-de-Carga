@@ -4,14 +4,20 @@ namespace Balanceador_de_Carga.Models
 {
     class Server
     {
-        public Server(int idServidor, List<User> usuariosAlocados, int ticksAtivos)
+        /// <summary>
+        /// Método construtor do obj Servidor
+        /// </summary>
+        /// <param name="idServidor">Id caso exista</param>
+        /// <param name="usuariosAlocados">Lista de usuários alocados</param>
+        /// <param name="ticksAtivos">Ticks ativos</param>
+        public Server(int id_Servidor, List<User> usuariosAlocados, int ticksAtivos)
         {
-            IdServidor = idServidor;
+            idServidor = id_Servidor;
             this.usuariosAlocados = usuariosAlocados;
             this.ticksAtivos = ticksAtivos;
         }
 
-        private int IdServidor { get; set; }
+        private int idServidor { get; set; }
 
         private List<User> usuariosAlocados;
 

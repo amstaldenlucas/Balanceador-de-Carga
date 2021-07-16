@@ -1,8 +1,6 @@
 ﻿using Balanceador_de_Carga.Services;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using Xunit;
 
 namespace Balancedor_de_Carga_Test.Services

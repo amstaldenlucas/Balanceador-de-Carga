@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace Balanceador_de_Carga.Services
 {
@@ -11,6 +10,7 @@ namespace Balanceador_de_Carga.Services
         public string DiretorioGravar;
         private string DiretorioRaiz { get; set; }
 
+        // Instanciando um novo obj Arquivo
         public Arquivo(string diretorioRaiz = null)
         {
             DiretorioRaiz = string.IsNullOrEmpty(diretorioRaiz) ? AppDomain.CurrentDomain.BaseDirectory.ToString() + @"Arquivos" : diretorioRaiz;
@@ -18,10 +18,18 @@ namespace Balanceador_de_Carga.Services
             DiretorioLeitura = DiretorioRaiz + @"\Ler\input.txt";
             DiretorioGravar = DiretorioRaiz + @"\Gravar\output.txt";
         }
+
+        /// <summary>
+        /// Ler um arquivo
+        /// </summary>
+        /// <param name="caminhoArquivo">Caminho do arquivo para leitura</param>
+        /// <returns>Lista de valores em inteiro (1 item para cada linha do arquivo)</returns>
         public List<int> LerArquivo(string caminhoArquivo = null)
         {
+            // Definir o diretório do arquivo para ler
             caminhoArquivo = string.IsNullOrEmpty(caminhoArquivo) ? DiretorioLeitura : caminhoArquivo;
 
+            // Caso não existir o diretório para leitura, criar um novo
             VerificarDiretorioRaiz(caminhoArquivo);
 
             List<int> linhas = new List<int>();
@@ -32,6 +40,7 @@ namespace Balanceador_de_Carga.Services
                 return linhas;
             }
 
+            // Ler as linhas do arquivo.
             try
             {
                 Console.WriteLine("\nIniciando leitura do arquivo...");
@@ -57,6 +66,12 @@ namespace Balanceador_de_Carga.Services
                 return linhas;
         }
 
+
+        /// <summary>
+        /// Verificar se as informações existentes no arquivo são válidas.
+        /// </summary>
+        /// <param name="conteudoArquivo">Conteúdo para analisar</param>
+        /// <returns>True caso seja válido. False para arquivo inválido</returns>
         private bool ValidarArquivo(List<int> conteudoArquivo)
         {
             Validador validador = new Validador();
@@ -68,6 +83,12 @@ namespace Balanceador_de_Carga.Services
             return string.IsNullOrEmpty(erro);
         }
 
+
+        /// <summary>
+        /// Escrever em um arquivo.
+        /// </summary>
+        /// <param name="caminhoSalvarArquivo">Caminho absoluto onde será salvo</param>
+        /// <param name="valoresParaEscrita">Lista contendo o que deverá ser escrito em cada linha</param>
         public void EscreverArquivo(string caminhoSalvarArquivo = null, List<string> valoresParaEscrita = null)
         {
             caminhoSalvarArquivo = string.IsNullOrEmpty(caminhoSalvarArquivo) ? DiretorioGravar : caminhoSalvarArquivo;
@@ -96,6 +117,12 @@ namespace Balanceador_de_Carga.Services
             }
         }
 
+
+        /// <summary>
+        /// Verificar se já exite um arquivo com o mesmo nome.
+        /// </summary>
+        /// <param name="caminhoArquivo">Caminho absoluto onde o arquivo será salvo.</param>
+        /// <returns>Valor entre parênteses para o novo arquivo. Ex: (1) (2) (3)</returns>
         private string DefinirNomeArquivo(string caminhoArquivo)
         {
             int num = 0;
@@ -110,6 +137,11 @@ namespace Balanceador_de_Carga.Services
             return novoNome;
         }
 
+
+        /// <summary>
+        /// Verificar se o diretório raiz para leitura/escrita já existe.
+        /// </summary>
+        /// <param name="caminhoArquivo">Caminho absoluto.</param>
         public void VerificarDiretorioRaiz(string caminhoArquivo = null)
         {
             string dirRaizLeitura = this.DiretorioRaiz;
@@ -129,6 +161,11 @@ namespace Balanceador_de_Carga.Services
                 EscreverArquivo(dirRaizLeitura, GetArquivoPadrao());
         }
 
+
+        /// <summary>
+        /// Obter um arquivo padrão;
+        /// </summary>
+        /// <returns>Lista de strings contendo um arquivo padrão válido.</returns>
         private List<string> GetArquivoPadrao()
         {
             List<string> arquivoPadrao = new List<string>

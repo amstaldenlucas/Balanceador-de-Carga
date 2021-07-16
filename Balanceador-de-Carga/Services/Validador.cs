@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Balanceador_de_Carga.Services
 {
@@ -11,6 +10,11 @@ namespace Balanceador_de_Carga.Services
         const Int16 MENOR_VALOR_USUARIOS = 1;
         const Int16 MAIOR_VALOR_USUARIOS = 10;
 
+        /// <summary>
+        /// Validar se os valores recebidos estão dentro do Min e Max permitido.
+        /// </summary>
+        /// <param name="valoresArquivo">Lista contendo os valores</param>
+        /// <returns></returns>
         public string ValidarArquivoEntrada(List<int> valoresArquivo)
         {
             string erro = string.Empty;

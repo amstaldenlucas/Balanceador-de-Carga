@@ -6,6 +6,11 @@ namespace Balanceador_de_Carga.Models
 {
     class User
     {
+        /// <summary>
+        /// Método construtor para o usuário
+        /// </summary>
+        /// <param name="qtdTask">Qtd de tasks executadas</param>
+        /// <param name="idUsuario">Id Usuário</param>
         public User(int qtdTask, int idUsuario = 0)
         {
             IdUsuario = idUsuario;
@@ -20,17 +25,5 @@ namespace Balanceador_de_Carga.Models
             get { return qtdTask; }
             set { qtdTask = value; }
         }
-
-        public List<User> GetUsersParaAlocar(int conteudoLinha, int ttask, int qtdTask)
-        {
-            List<User> users = new List<User>();
-            for (int i = 0; i <conteudoLinha; i++ )
-            {
-                users.Add(new User(qtdTask, ttask));
-            }
-
-            return users;
-        }
-
     }
 }
