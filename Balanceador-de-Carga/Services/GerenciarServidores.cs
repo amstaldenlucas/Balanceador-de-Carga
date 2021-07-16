@@ -5,10 +5,9 @@ using System.Threading;
 
 namespace Balanceador_de_Carga.Services
 {
-    class GerenciarServidores
+    public class GerenciarServidores
     {
-        //private string CaminhoArquivo;
-        private List<int> ConteudoArquivo;
+        public List<int> ConteudoArquivo;
         private Arquivo Arquivo = new Arquivo();
 
         private BalancearServidores BalancearServidores = new BalancearServidores();
@@ -16,15 +15,11 @@ namespace Balanceador_de_Carga.Services
         private int TTask = 0;
         private int UMax = 0;
         private int CustoTotalServidores = 0;
+        public int QuantidadeUsuariosAlocar = 0;
 
         List<Server> listServidores = new List<Server>();
         List<User> listUsers = new List<User>();
         List<string> linhasParaSaida = new List<string>();
-
-        //public GerenciarServidores(string caminhoArquivo = null)
-        //{
-        //    CaminhoArquivo = caminhoArquivo;
-        //}
 
         public void ControlarServers()
         {
@@ -64,7 +59,7 @@ namespace Balanceador_de_Carga.Services
             Arquivo.EscreverArquivo("", linhasParaSaida);
         }
 
-        private void DefinirQtdUsuariosAlocar(int indice)
+        public void DefinirQtdUsuariosAlocar(int indice)
         {
             this.listUsers.Clear();
 
@@ -75,9 +70,11 @@ namespace Balanceador_de_Carga.Services
                 for (int i = 0; i < conteudo; i++)
                     this.listUsers.Add(new User(TTask, indice));
             }
+
+            QuantidadeUsuariosAlocar = this.listUsers.Count;
         }
 
-        private void LerAquivo()
+        public void LerAquivo()
         {
             this.ConteudoArquivo = Arquivo.LerArquivo();
             this.TTask = ConteudoArquivo[0];

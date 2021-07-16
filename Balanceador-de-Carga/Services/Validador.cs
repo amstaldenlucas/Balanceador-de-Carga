@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Balanceador_de_Carga.Services
 {
-    class Validador
+    public class Validador
     {
         const Int16 MENOR_VALOR_TASK = 1;
         const Int16 MAIOR_VALOR_TASK = 10;

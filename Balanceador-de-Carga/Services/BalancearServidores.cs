@@ -57,7 +57,7 @@ namespace Balanceador_de_Carga.Services
             return servidoresOnline;
         }
 
-        private void DeletarUsuariosInativos(Server servidor, int QtdTasksExecutadas)
+        public void DeletarUsuariosInativos(Server servidor, int QtdTasksExecutadas)
         {
             List<User> ususariosParaDeleter = new List<User>();
 

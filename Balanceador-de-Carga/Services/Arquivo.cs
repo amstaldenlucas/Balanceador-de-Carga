@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Balanceador_de_Carga.Services
 {
-    class Arquivo
+    public class Arquivo
     {
         public string DiretorioLeitura;
         public string DiretorioGravar;
@@ -76,14 +76,17 @@ namespace Balanceador_de_Carga.Services
                 return;
             }
 
-            using (StreamWriter sw = new StreamWriter(DefinirNomeArquivo(caminhoSalvarArquivo)))
+            string nomeArquivoExportar = DefinirNomeArquivo(caminhoSalvarArquivo);
+
+            using (StreamWriter sw = new StreamWriter(nomeArquivoExportar))
             {
+
                 try
                 {
                     foreach (string item in valoresParaEscrita)
                         sw.WriteLine(item.Trim());
 
-                    Console.WriteLine("\nArquivo gravado com suceso!");
+                    Console.WriteLine($"\nArquivo gravado com suceso. Diretório: \n{nomeArquivoExportar}");
                 }
                 catch (IOException ex)
                 {
