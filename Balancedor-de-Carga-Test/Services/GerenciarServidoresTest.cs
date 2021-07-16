@@ -6,32 +6,20 @@ using Xunit;
 
 namespace Balancedor_de_Carga_Test.Services
 {
+    [Collection("Sequential")]
     public class GerenciarServidoresTest
     {
         [Fact]
         public void LerAquivoTest()
         {
+            Console.WriteLine("Iniciando teste ler arquivo");
             GerenciarServidores gerenciar = new GerenciarServidores();
+
             gerenciar.LerAquivo();
+            gerenciar.DefinirQtdUsuariosAlocar(2);
 
             Assert.True(gerenciar.ConteudoArquivo.Count > 0);
-        }
-
-        [Fact]
-        public void DefinirQtdUsuariosAlocarTest()
-        {
-            GerenciarServidores gerenciarServidores = new GerenciarServidores();
-
-            gerenciarServidores.LerAquivo();
-            //gerenciarServidores.ConteudoArquivo.Clear();
-            gerenciarServidores.ConteudoArquivo = new List<int>
-            {
-                2,
-                3
-            };
-
-            gerenciarServidores.DefinirQtdUsuariosAlocar(1);
-            Assert.Equal(3, gerenciarServidores.QuantidadeUsuariosAlocar);
+            Assert.Equal(1, gerenciar.QuantidadeUsuariosAlocar);
         }
     }
 }

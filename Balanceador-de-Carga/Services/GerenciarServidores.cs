@@ -21,10 +21,10 @@ namespace Balanceador_de_Carga.Services
         List<User> listUsers = new List<User>();
         List<string> linhasParaSaida = new List<string>();
 
-        public void ControlarServers()
+        public void ControlarServers(string caminhoArquivo = null)
         {
             BalancearServidores balancearServidores = new BalancearServidores();
-            LerAquivo();
+            LerAquivo(caminhoArquivo);
 
 
             for (int i = 0; i < ticks; i++)
@@ -74,9 +74,17 @@ namespace Balanceador_de_Carga.Services
             QuantidadeUsuariosAlocar = this.listUsers.Count;
         }
 
-        public void LerAquivo()
+        public void LerAquivo(string caminhoArquivo = null)
         {
-            this.ConteudoArquivo = Arquivo.LerArquivo();
+            List<int> conteudoLido = Arquivo.LerArquivo(caminhoArquivo);
+
+            if (conteudoLido == null)
+                EncerrarAplicativo();
+
+            this.ConteudoArquivo = conteudoLido;
+            if (this.ConteudoArquivo.Count == 0)
+                EncerrarAplicativo();
+
             this.TTask = ConteudoArquivo[0];
             this.UMax = ConteudoArquivo[1];
             this.ticks = (ConteudoArquivo.Count - 2) + TTask;
@@ -85,7 +93,7 @@ namespace Balanceador_de_Carga.Services
         public void EncerrarAplicativo()
         {
             Console.WriteLine("\n------------------------------------------------------------------------");
-            Console.WriteLine("Programa finalizado com suceso. Pressione qualquer tecla para finalizar!");
+            Console.WriteLine("Programa encerrado. Pressione qualquer tecla para finalizar!");
             Console.ReadLine();
 
 

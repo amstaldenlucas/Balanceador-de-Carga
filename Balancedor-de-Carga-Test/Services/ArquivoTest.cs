@@ -7,6 +7,7 @@ using Xunit;
 
 namespace Balancedor_de_Carga_Test.Services
 {
+    [Collection("Sequential")]
     public class ArquivoTest
     {
         Arquivo arquivo = new Arquivo();
@@ -14,6 +15,7 @@ namespace Balancedor_de_Carga_Test.Services
         [Fact] // Método para verificar o construtor 
         public void VerificarMetodoConstrutor()
         {
+            Console.WriteLine("Iniciando teste para Verificar Metodo Construtor Classe Arquivo");
             string dirRaiz = AppDomain.CurrentDomain.BaseDirectory.ToString() + @"Arquivos";
             string dirLeitura = dirRaiz + @"\Ler\input.txt";
 

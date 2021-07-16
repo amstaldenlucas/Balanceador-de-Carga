@@ -21,13 +21,14 @@ namespace Balanceador_de_Carga.Services
         public List<int> LerArquivo(string caminhoArquivo = null)
         {
             caminhoArquivo = string.IsNullOrEmpty(caminhoArquivo) ? DiretorioLeitura : caminhoArquivo;
-            VerificarDiretorioRaiz();
+
+            VerificarDiretorioRaiz(caminhoArquivo);
 
             List<int> linhas = new List<int>();
 
             if (!File.Exists(caminhoArquivo))
             {
-                Console.WriteLine($"\nArquivo não encontrado. Favor verificar o caminho do arquivo");
+                Console.WriteLine($"\nArquivo não encontrado. Favor verificar o caminho absoluto");
                 return linhas;
             }
 
@@ -109,7 +110,7 @@ namespace Balanceador_de_Carga.Services
             return novoNome;
         }
 
-        public void VerificarDiretorioRaiz()
+        public void VerificarDiretorioRaiz(string caminhoArquivo = null)
         {
             string dirRaizLeitura = this.DiretorioRaiz;
             string dirRaizEscrita = dirRaizLeitura + @"\Gravar";
@@ -117,7 +118,7 @@ namespace Balanceador_de_Carga.Services
             dirRaizLeitura += @"\Ler";
 
 
-            if (!Directory.Exists(dirRaizLeitura))
+            if (!Directory.Exists(dirRaizLeitura) || caminhoArquivo == DiretorioLeitura)
                 Directory.CreateDirectory(dirRaizLeitura);
 
             if (!Directory.Exists(dirRaizEscrita))

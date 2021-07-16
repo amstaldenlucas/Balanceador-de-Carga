@@ -6,6 +6,7 @@ using Xunit;
 
 namespace Balancedor_de_Carga_Test.Services
 {
+    [Collection("Sequential")]
     public class ValidadorTest
     {
         [Fact] // Método para verificar se o validador do arquivo entrada está correto

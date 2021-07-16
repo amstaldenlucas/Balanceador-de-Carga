@@ -5,6 +5,7 @@ using Xunit;
 
 namespace Balancedor_de_Carga_Test.Services
 {
+    [Collection("Sequential")]
     public class BalancearServidoresTest
     {
         [Fact]
