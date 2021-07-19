@@ -19,4 +19,4 @@
 1. Possuir o Visual Studio instalado no computador. [Visual Studio](https://visualstudio.microsoft.com/pt-br/downloads/).
 2. Baixar o código fonte disponibilizado no repositório. [Código Fonte do Projeto](https://github.com/lucas-amstalden/Balanceador-de-Carga.git).
 3. Acessar o menu 'View > Test Explorer' e escolher a opção 'Run All Tests in View'. 
-- Vídeo explicativo executando os testes unitário. [Link para o vídeo](https://youtu.be/mVlw7lcsDio).
+- Vídeo explicativo executando os testes unitários do projeto. [Link para o vídeo](https://youtu.be/mVlw7lcsDio).
