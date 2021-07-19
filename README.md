@@ -14,3 +14,9 @@
     - "Diretório raiz do aplicativo/Arquivos/Ler/input.txt".
 - Por fim, após o processamento do arquivo válido o aplicativo irá salvar o arquivo output.txt no diretório à seguir:
     - "Diretório raiz do aplicativo/Arquivos/Gravar/output.txt".
+
+## Passo-a-passo para executar a bateria de testes unitários:
+1. Possuir o Visual Studio instalado no computador. [Visual Studio](https://visualstudio.microsoft.com/pt-br/downloads/).
+2. Baixar o código fonte disponibilizado no repositório. [Código Fonte do Projeto](https://github.com/lucas-amstalden/Balanceador-de-Carga.git).
+3. Acessar o menu 'View > Test Explorer' e escolher a opção 'Run All Tests in View'. 
+4. - Vídeo explicativo executando os testes unitário. [Link para o vídeo](https://youtu.be/mVlw7lcsDio).
